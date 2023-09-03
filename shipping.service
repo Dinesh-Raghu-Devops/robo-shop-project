@@ -3,8 +3,8 @@ Description=Shipping Service
 
 [Service]
 User=roboshop
-Environment=CART_ENDPOINT=172.31.36.51:8080
-Environment=DB_HOST=172.31.37.116
+Environment=CART_ENDPOINT=cart.dineshdevops.com:8080
+Environment=DB_HOST=mysql.dineshdevops.com
 ExecStart=/bin/java -jar /app/shipping.jar
 SyslogIdentifier=shipping
 

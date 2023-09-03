@@ -1,5 +1,4 @@
 log=/tmp/logfile
-mongo_schema=true
 func_exitstatus(){
    if [ $? -eq 0 ];then
       echo "SUCCESS"
