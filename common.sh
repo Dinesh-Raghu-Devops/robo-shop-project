@@ -52,11 +52,11 @@ func_java(){
   echo -e "\e[33m<<<<<<Copying ${component} file to systemd>>>>>>\e[0m"
   cp ${component}.service /etc/systemd/system/ &>>${log}
   func_exitstatus
-  yum install maven -y
+  yum install maven -y &>>${log}
   func_exitstatus
   func_appconfig
-  mvn clean package
-  mv target/${component}-1.0.jar ${component}.jar
+  mvn clean package &>>${log}
+  mv target/${component}-1.0.jar ${component}.jar &>>${log}
   func_exitstatus
   func_schema
   func_service
