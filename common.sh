@@ -15,6 +15,12 @@ func_service(){
   func_exitstatus
  }
 func_appconfig(){
+  echo -e "\e[33m<<<<<<creating user roboshop>>>>>>\e[0m"
+  useradd roboshop &>>${log}
+  func_exitstatus
+  echo -e "\e[33m<<<<<<Removing if app directory exists>>>>>>\e[0m"
+  rm -rf /app
+  func_exitstatus
   echo -e "\e[33m<<<<<<Creating application directory>>>>>>\e[0m"
   mkdir /app &>>${log}
   func_exitstatus
@@ -24,19 +30,6 @@ func_appconfig(){
   func_exitstatus
   unzip /tmp/${component}.zip &>>${log}
   cd /app &>>${log}
-  echo -e "\e[33m<<<<<<Installing npm modules>>>>>>\e[0m"
-  npm install &>>${log}
-  func_exitstatus
-  if [ "{mongo_schema}" == "true" ]; then
-    echo -e "\e[33m<<<<<<Copying mongo repos to yum.repos.d>>>>>>\e[0m"
-    cp mongo.repo /etc/yum.repos.d/mongo.repo &>>${log}
-    func_exitstatus
-    echo -e "\e[33m<<<<<<Installing mongodb shell >>>>>>\e[0m"
-    yum install mongodb-org-shell -y &>>${log}
-    echo -e "\e[33m<<<<<<Loading schema>>>>>>\e[0m"
-    mongo --host mongodb.dineshdevops.com < /app/schema/${component}.js &>>${log}
-  fi
-  func_exitstatus
 }
 func_nodeJS(){
   echo -e "\e[33m<<<<<<Copying ${component} file to systemd>>>>>>\e[0m"
@@ -48,17 +41,45 @@ func_nodeJS(){
   echo -e "\e[33m<<<<<<Installing NodeJS>>>>>>\e[0m"
   yum install nodejs -y &>>${log}
   func_exitstatus
-  echo -e "\e[33m<<<<<<creating user roboshop>>>>>>\e[0m"
-  useradd roboshop &>>${log}
-  func_exitstatus
-  echo -e "\e[33m<<<<<<Removing if app directory exists>>>>>>\e[0m"
-  rm -rf /app
-  func_exitstatus
-
   func_appconfig
-
+  echo -e "\e[33m<<<<<<Installing npm modules>>>>>>\e[0m"
+  npm install &>>${log}
+  func_exitstatus
+  func_schema
   func_service
 }
+func_java(){
+  echo -e "\e[33m<<<<<<Copying ${component} file to systemd>>>>>>\e[0m"
+  cp ${component}.service /etc/systemd/system/ &>>${log}
+  func_exitstatus
+  yum install maven -y
+  func_exitstatus
+  func_appconfig
+  mvn clean package
+  mv target/${component}-1.0.jar ${component}.jar
+  func_exitstatus
+  func_schema
+  func_service
 
+}
+func_schema(){
+    if [ "{mongo_schema}" == "true" ]; then
+          echo -e "\e[33m<<<<<<Copying mongo repos to yum.repos.d>>>>>>\e[0m"
+          cp mongo.repo /etc/yum.repos.d/mongo.repo &>>${log}
+          func_exitstatus
+          echo -e "\e[33m<<<<<<Installing mongodb shell >>>>>>\e[0m"
+          yum install mongodb-org-shell -y &>>${log}
+          echo -e "\e[33m<<<<<<Loading schema>>>>>>\e[0m"
+          mongo --host mongodb.dineshdevops.com < /app/schema/${component}.js &>>${log}
+    fi
+    func_exitstatus
+    if [ "{sql_schema}" == "true" ]; then
+       echo -e "\e[33m<<<<<<Installing Mysql >>>>>>\e[0m"
+       yum install mysql -y  &>>${log}
+       echo -e "\e[33m<<<<<<Loading schema>>>>>>\e[0m"
+       mysql -h mysql.dineshdevops.com -uroot -pRoboShop@1 < /app/schema/shipping.sql &>>${log}
+    fi
+    func_exitstatus
+     }
 
 
