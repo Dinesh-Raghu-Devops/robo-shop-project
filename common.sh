@@ -14,18 +14,38 @@ func_service(){
 func_appconfig(){
   echo -e "\e[33m<<<<<<Creating application directory>>>>>>\e[0m"
   mkdir /app &>>${log}
+    if [ $? -eq 0 ]; then
+      echo "SUCCESS"
+     else
+        echo "FAILED"
+    fi
   echo -e "\e[33m<<<<<<Insalling application>>>>>>\e[0m"
   curl -o /tmp/${component}.zip https://roboshop-artifacts.s3.amazonaws.com/${component}.zip &>>${log}
   cd /app &>>${log}
+    if [ $? -eq 0 ]; then
+      echo "SUCCESS"
+     else
+        echo "FAILED"
+    fi
   unzip /tmp/${component}.zip &>>${log}
   cd /app &>>${log}
   echo -e "\e[33m<<<<<<Installing npm modules>>>>>>\e[0m"
   npm install &>>${log}
+    if [ $? -eq 0 ]; then
+      echo "SUCCESS"
+     else
+        echo "FAILED"
+    fi
   if [ mongo_schema == true]; then
    echo -e "\e[33m<<<<<<Installing mongodb shell >>>>>>\e[0m"
    yum install mongodb-org-shell -y &>>${log}
    echo -e "\e[33m<<<<<<Loading schema>>>>>>\e[0m"
    mongo --host mongodb.dineshdevops.com < /app/schema/${component}.js &>>${log}
+  fi
+  if [ $? -eq 0 ]; then
+      echo "SUCCESS"
+     else
+        echo "FAILED"
   fi
 }
 func_nodeJS(){
