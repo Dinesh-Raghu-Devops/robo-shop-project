@@ -28,6 +28,9 @@ func_appconfig(){
   npm install &>>${log}
   func_exitstatus
   if [ "{mongo_schema}" == "true" ]; then
+    echo -e "\e[33m<<<<<<Copying mongo repos to yum.repos.d>>>>>>\e[0m"
+    cp mongo.repo /etc/yum.repos.d/mongo.repo &>>${log}
+    func_exitstatus
     echo -e "\e[33m<<<<<<Installing mongodb shell >>>>>>\e[0m"
     yum install mongodb-org-shell -y &>>${log}
     echo -e "\e[33m<<<<<<Loading schema>>>>>>\e[0m"
@@ -36,9 +39,6 @@ func_appconfig(){
   func_exitstatus
 }
 func_nodeJS(){
-  echo -e "\e[33m<<<<<<Copying mongo repos to yum.repos.d>>>>>>\e[0m"
-  cp mongo.repo /etc/yum.repos.d/mongo.repo &>>${log}
-  func_exitstatus
   echo -e "\e[33m<<<<<<Copying ${component} file to systemd>>>>>>\e[0m"
   cp ${component}.service /etc/systemd/system/ &>>${log}
   func_exitstatus
