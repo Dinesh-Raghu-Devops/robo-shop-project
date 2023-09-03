@@ -62,6 +62,19 @@ func_java(){
   func_service
 
 }
+
+func_python(){
+  echo -e "\e[33m<<<<<<Copying ${component} file to systemd>>>>>>\e[0m"
+  cp ${component}.service /etc/systemd/system/ &>>${log}
+  echo -e "\e[33m<<<<<<Installing Python packages>>>>>>\e[0m"
+  yum install python36 gcc python3-devel -y &>>${log}
+  func_exitstatus
+  func_appconfig
+  echo -e "\e[33m<<<<<<Installing pip3>>>>>>\e[0m"
+  pip3.6 install -r requirements.txt &>>${log}
+  func_service
+
+}
 func_schema(){
     if [ "{mongo_schema}" == "true" ]; then
           echo -e "\e[33m<<<<<<Copying mongo repos to yum.repos.d>>>>>>\e[0m"
@@ -81,5 +94,4 @@ func_schema(){
     fi
     func_exitstatus
      }
-
 
