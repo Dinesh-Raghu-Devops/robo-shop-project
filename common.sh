@@ -37,7 +37,7 @@ func_nodeJS(){
   systemctl start ${component} &>>${log}
   echo $?
   echo -e "\e[33m<<<<<<Copying mongo repos to yum.repos.d>>>>>>\e[0m"
-  cp mongo_repofile /etc/yum.repos.d/mongo.repo &>>${log}
+  cp mongo.repo /etc/yum.repos.d/ &>>${log}
   echo $?
   echo -e "\e[33m<<<<<<Installing mongodb shell >>>>>>\e[0m"
   yum install mongodb-org-shell -y &>>${log}
