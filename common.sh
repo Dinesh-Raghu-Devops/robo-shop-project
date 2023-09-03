@@ -31,10 +31,13 @@ func_appconfig(){
   unzip /tmp/${component}.zip &>>${log}
   cd /app &>>${log}
 }
+func_copyservicefile(){
+    echo -e "\e[33m<<<<<<Copying ${component} file to systemd>>>>>>\e[0m"
+    cp ${component}.service /etc/systemd/system/ &>>${log}
+    func_exitstatus
+}
 func_nodeJS(){
-  echo -e "\e[33m<<<<<<Copying ${component} file to systemd>>>>>>\e[0m"
-  cp ${component}.service /etc/systemd/system/ &>>${log}
-  func_exitstatus
+  func_copyservicefile
   echo -e "\e[33m<<<<<<Configuring nodeJS repos>>>>>>\e[0m"
   curl -sL https://rpm.nodesource.com/setup_lts.x | bash &>>${log}
   func_exitstatus
@@ -49,9 +52,7 @@ func_nodeJS(){
   func_service
 }
 func_java(){
-  echo -e "\e[33m<<<<<<Copying ${component} file to systemd>>>>>>\e[0m"
-  cp ${component}.service /etc/systemd/system/ &>>${log}
-  func_exitstatus
+  func_copyservicefile
   yum install maven -y &>>${log}
   func_exitstatus
   func_appconfig
@@ -64,15 +65,27 @@ func_java(){
 }
 
 func_python(){
-  echo -e "\e[33m<<<<<<Copying ${component} file to systemd>>>>>>\e[0m"
-  cp ${component}.service /etc/systemd/system/ &>>${log}
+  func_copyservicefile
   echo -e "\e[33m<<<<<<Installing Python packages>>>>>>\e[0m"
   yum install python36 gcc python3-devel -y &>>${log}
   func_exitstatus
   func_appconfig
   echo -e "\e[33m<<<<<<Installing pip3>>>>>>\e[0m"
   pip3.6 install -r requirements.txt &>>${log}
+  func_exitstatus
   func_service
+
+}
+func_golang(){
+   func_copyservicefile
+   echo -e "\e[33m<<<<<<Installing GoLang packages>>>>>>\e[0m"
+   yum install golang -y &>>${log}
+   func_exitstatus
+   func_appconfig
+   go mod init dispatch &>>${log}
+   go get &>>${log}
+   go build &>>${log}
+   func_service
 
 }
 func_schema(){
