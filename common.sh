@@ -12,6 +12,9 @@ func_nodeJS(){
   echo -e "\e[33m<<<<<<Copying ${component} file to systemd>>>>>>\e[0m"
   cp ${component}.service /etc/systemd/system/ &>>${log}
   echo $?
+  echo -e "\e[33m<<<<<<Removing if app directory exists>>>>>>\e[0m"
+  rm -rf /app
+  exit $?
   echo -e "\e[33m<<<<<<Creating application directory>>>>>>\e[0m"
   mkdir /app &>>${log}
   echo $?
