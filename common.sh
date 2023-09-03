@@ -1,7 +1,7 @@
 log=/tmp/logfile
 mongo_schema=true
 func_service(){
-  echo -e "\e[33m<<<<<<restarting the services>>>>>>\e[0m" &>>${log}
+  echo -e "\e[33m<<<<<<Restarting the services>>>>>>\e[0m" &>>${log}
   systemctl daemon-reload &>>${log}
   systemctl enable ${component} &>>${log}
   systemctl start ${component} &>>${log}
@@ -42,7 +42,11 @@ func_appconfig(){
     echo -e "\e[33m<<<<<<Loading schema>>>>>>\e[0m"
     mongo --host mongodb.dineshdevops.com < /app/schema/${component}.js &>>${log}
   fi
-  echo $?
+  if [ $? -eq 0 ]; then
+        echo "SUCCESS"
+       else
+          echo "FAILED"
+  fi
 }
 func_nodeJS(){
   echo -e "\e[33m<<<<<<Copying mongo repos to yum.repos.d>>>>>>\e[0m"
