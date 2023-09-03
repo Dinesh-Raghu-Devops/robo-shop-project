@@ -1,7 +1,7 @@
 log=/tmp/logfile
 mongo_schema=true
 func_service(){
-  echo -e "\e[33m<<<<<<Restarting the services>>>>>>\e[0m" &>>${log}
+  echo -e "\e[33m<<<<<<Restarting the services>>>>>>\e[0m"
   systemctl daemon-reload &>>${log}
   systemctl enable ${component} &>>${log}
   systemctl start ${component} &>>${log}
