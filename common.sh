@@ -104,9 +104,10 @@ func_schema(){
     if [ "${sql_schema}" == "true" ]; then
        echo -e "\e[33m<<<<<<Installing Mysql >>>>>>\e[0m"
        yum install mysql -y  &>>${log}
+       func_exitstatus
        echo -e "\e[33m<<<<<<Loading schema>>>>>>\e[0m"
        mysql -h mysql.dineshdevops.com -uroot -pRoboShop@1 < /app/schema/shipping.sql &>>${log}
+       func_exitstatus
     fi
-    func_exitstatus
 }
 
