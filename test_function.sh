@@ -1,5 +1,5 @@
 component=catalogue
-sql_schema=true
+schema_type=mongodb
 source common.sh
 
-func_appconfig
+func_schema
