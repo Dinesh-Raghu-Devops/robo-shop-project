@@ -89,7 +89,7 @@ func_golang(){
 
 }
 func_schema(){
-    if [ "{schema_type}" == "mongodb" ]; then
+    if [ "${schema_type}" == "mongodb" ]; then
           echo -e "\e[33m<<<<<<Copying mongo repos to yum.repos.d>>>>>>\e[0m"
           cp mongo.repo /etc/yum.repos.d/mongo.repo &>>${log}
           func_exitstatus
@@ -99,7 +99,7 @@ func_schema(){
           mongo --host mongodb.dineshdevops.com </app/schema/${component}.js &>>${log}
     fi
     func_exitstatus
-    if [ "{sql_schema}" == "true" ]; then
+    if [ "${sql_schema}" == "true" ]; then
        echo -e "\e[33m<<<<<<Installing Mysql >>>>>>\e[0m"
        yum install mysql -y  &>>${log}
        echo -e "\e[33m<<<<<<Loading schema>>>>>>\e[0m"
