@@ -96,10 +96,11 @@ func_schema(){
           func_exitstatus
           echo -e "\e[33m<<<<<<Installing mongodb shell >>>>>>\e[0m"
           yum install mongodb-org-shell -y &>>${log}
+          func_exitstatus
           echo -e "\e[33m<<<<<<Loading schema>>>>>>\e[0m"
           mongo --host mongodb.dineshdevops.com </app/schema/${component}.js &>>${log}
+          func_exitstatus
     fi
-    func_exitstatus
     if [ "${sql_schema}" == "true" ]; then
        echo -e "\e[33m<<<<<<Installing Mysql >>>>>>\e[0m"
        yum install mysql -y  &>>${log}
