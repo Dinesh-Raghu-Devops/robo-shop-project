@@ -1,4 +1,4 @@
 component=catalogue
-mongo_schema=true
+schema_type=mongodb
 source common.sh
 func_nodeJS

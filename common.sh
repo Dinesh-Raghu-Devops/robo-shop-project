@@ -89,7 +89,7 @@ func_golang(){
 
 }
 func_schema(){
-    if [ "{mongo_schema}" == "true" ]; then
+    if [ "{schema_type}" == "mongodb" ]; then
           echo -e "\e[33m<<<<<<Copying mongo repos to yum.repos.d>>>>>>\e[0m"
           cp mongo.repo /etc/yum.repos.d/mongo.repo &>>${log}
           func_exitstatus
