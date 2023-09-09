@@ -106,5 +106,5 @@ func_schema(){
        mysql -h mysql.dineshdevops.com -uroot -pRoboShop@1 < /app/schema/shipping.sql &>>${log}
     fi
     func_exitstatus
-     }
+}
 
