@@ -1,5 +1,5 @@
 component=catalogue
-schema_type=mongodb
+sql_schema=true
 source common.sh
 
 func_schema
